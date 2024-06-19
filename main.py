@@ -4,8 +4,13 @@ import re
 import asyncio
 import aiohttp
 from pymongo import MongoClient
-from pyrogram.errors import FloodWait
+from pyrogram.errors import FloodWait, RPCError
+import logging
 import time
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # MongoDB configuration
 MONGO_URI = 'mongodb+srv://iamdaxx404:asd@mohio.1uwb6r5.mongodb.net'
@@ -20,7 +25,7 @@ app = pyrogram.Client(
     'mrdaxx_scrapper',
     api_id='27649783',
     api_hash='834fd6015b50b781e0f8a41876ca95c8',
-    session_string=correct_padding("BQEBfSYAqGKrE3X2TyXhJQwTfbD70-BlYP6gS-TUM74yBX2nnLwT0r-pWZUn516QzjsyUfzWXibY_9h2jNc9UIEitH3aQcZhqEj4v5wQ0l0-OmAeRADY0Hicqd8zVWaoC-o9SlhZmbE1xA9JWQVTMC_FF6EG3Xx1K1pkRwW-0NkA7uvBxV-q3uaLzSdy2gplOz0KlGXOqITpruRDfNcPDBjQjgmguH_A-7Q6C0oyqZ8l-k1W42JrR9f3aEx5p8ym7v2P8Wwo4X2KmjFL2yjphY8E-A04UjCH0KjQeudADe8bSry8MGvJ5JN142pEz4QxMEr8IH-UdwdGj6IA-3qAnBEW4HeulgAAAAGw_lmDAA")  # Ensure correct padding
+    session_string=correct_padding("BQGoLIMAOKXVTjaGOZN_8kShQdKccRd7HA-44GV5eLHHMW-x5wkMEWQHeNeymWRAp-Zml2tZZ8OjP8s-1_eLLKZiJTud9Nm8KO6iBNw_n91qB0tob5XfHcP9VRl1Yd97cCXOMv-wiQNNEN_APBKTGTrSdoEJxyv7RymmlhBSvmxmnIaewzSNR9rUE7SCojVWYskW01O7ootmaa41nPSJgFjfAn0bUGRI838LlbkDpxVuBqb83BTTunwBNlddBXmm10dm2aw7CaVf9JrCyn_X9dhB0YGoanFGqXFYGKpj7nshJ4djVN8MHtLRB3oKWQ7jQUKE4L6S8WVkyic0_5KqBj7tc_4gxQAAAAGw_lmDAA")  # Ensure correct padding
 )
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
@@ -32,12 +37,19 @@ def filter_cards(text):
 async def bin_lookup(bin_number):
     bin_info_url = BIN_API_URL.format(bin_number)
     async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
-        async with session.get(bin_info_url) as response:
-            if response.status == 200:
-                try:
-                    return await response.json()
-                except aiohttp.ContentTypeError:
+        try:
+            async with session.get(bin_info_url) as response:
+                if response.status == 200:
+                    try:
+                        return await response.json()
+                    except aiohttp.ContentTypeError:
+                        logger.error("Invalid content type received")
+                        return None
+                else:
+                    logger.error(f"Failed to fetch BIN info, status code: {response.status}")
                     return None
+        except Exception as e:
+            logger.error(f"Error during BIN lookup: {e}")
             return None
 
 async def send_message_with_retry(Client, chat_id, text, retries=5):
@@ -47,13 +59,18 @@ async def send_message_with_retry(Client, chat_id, text, retries=5):
             await Client.send_message(chat_id=chat_id, text=text)
             return
         except FloodWait as e:
-            print(f"FloodWait error: sleeping for {e.value} seconds")
+            logger.warning(f"FloodWait error: sleeping for {e.value} seconds")
             await asyncio.sleep(e.value)
             attempt += 1
-        except Exception as e:
-            print(f"Unexpected error: {e}")
+        except RPCError as e:
+            logger.error(f"RPCError: {e}")
             await asyncio.sleep(2 ** attempt)  # Exponential backoff
             attempt += 1
+        except Exception as e:
+            logger.error(f"Unexpected error: {e}")
+            await asyncio.sleep(2 ** attempt)  # Exponential backoff
+            attempt += 1
+    logger.error("Failed to send message after multiple retries")
 
 async def process_card(Client, card_info):
     bin_number = card_info[:6]
@@ -82,22 +99,26 @@ async def process_card(Client, card_info):
 
         # Save card info to MongoDB to prevent duplicate sending
         cards_collection.insert_one({"card_info": card_info})
+        logger.info(f"Card info saved: {card_info}")
 
 async def approved(Client, message):
     try:
         if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By JennaScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
+                logger.info("No card information found in message")
                 return
 
             tasks = []
             for card_info in filtered_card_info:
                 if not cards_collection.find_one({"card_info": card_info}):
                     tasks.append(process_card(Client, card_info))
+                else:
+                    logger.info(f"Card info already exists: {card_info}")
 
             await asyncio.gather(*tasks)
     except Exception as e:
-        print(e)
+        logger.error(f"Error in approved function: {e}")
 
 @app.on_message(filters.text)
 async def astro(Client, message):
