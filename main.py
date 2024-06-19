@@ -25,7 +25,7 @@ app = pyrogram.Client(
     'mrdaxx_scrapper',
     api_id='27649783',
     api_hash='834fd6015b50b781e0f8a41876ca95c8',
-    session_string=correct_padding("BQEBfSYAqGKrE3X2TyXhJQwTfbD70-BlYP6gS-TUM74yBX2nnLwT0r-pWZUn516QzjsyUfzWXibY_9h2jNc9UIEitH3aQcZhqEj4v5wQ0l0-OmAeRADY0Hicqd8zVWaoC-o9SlhZmbE1xA9JWQVTMC_FF6EG3Xx1K1pkRwW-0NkA7uvBxV-q3uaLzSdy2gplOz0KlGXOqITpruRDfNcPDBjQjgmguH_A-7Q6C0oyqZ8l-k1W42JrR9f3aEx5p8ym7v2P8Wwo4X2KmjFL2yjphY8E-A04UjCH0KjQeudADe8bSry8MGvJ5JN142pEz4QxMEr8IH-UdwdGj6IA-3qAnBEW4HeulgAAAAGw_lmDAA")  # Ensure correct padding
+    session_string=correct_padding("BQAaqk4ABQovHKgBLAXX6jGTZ6U2CpDXgmAtqrqyz0ZkJrPus_ehM4ZFOoeboxnqsRmef3qfNcFQQ2fS5M-VLrgsG8B7aYIJU5BY-q85jb7Oa6iJRHIOTVH9fjHYqi0XXkNvfLhIwCMcKTT-DxCb0zVRtxYs5pxGCxmvIL1fJrpUnb-kD4YGOQhELkiINv7Yn8VRItb-BmH5WjvetbUsz1J5NvVc5H53WRhi5NRo1Lm9G50XQCU_b7u2aWK7UWfiiPy7nn-ZYCm_xBpgNhqkKEO0W9BUg7-kDX9kNLVc_BcXO6GE_mTOKXT49DmYXcVPQM5oA8ZEwsHmaZ9Tjpjx5IyJlti_IQAAAAGnxzWwAQ")  # Ensure correct padding
 )
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
