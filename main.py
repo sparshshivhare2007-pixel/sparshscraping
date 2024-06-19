@@ -3,14 +3,25 @@ from pyrogram import Client, filters
 import re
 import asyncio
 import aiohttp
+from pymongo import MongoClient
+import base64
+
+# MongoDB configuration
+MONGO_URI = 'mongodb+srv://iamdaxx404:asd@mohio.1uwb6r5.mongodb.net'
+client = MongoClient(MONGO_URI)
+db = client['jetix_scrapper_db']
+cards_collection = db['cards']
+
+def correct_padding(session_string):
+    return session_string + "=" * ((4 - len(session_string) % 4) % 4)
 
 app = pyrogram.Client(
     'jetix_scrapper',
-    api_id='6134343',
-    api_hash='344493a60221b6483e47b00ff1461708',
-    session_string='''
-BQGoLIMAOKXVTjaGOZN_8kShQdKccRd7HA-44GV5eLHHMW-x5wkMEWQHeNeymWRAp-Zml2tZZ8OjP8s-1_eLLKZiJTud9Nm8KO6iBNw_n91qB0tob5XfHcP9VRl1Yd97cCXOMv-wiQNNEN_APBKTGTrSdoEJxyv7RymmlhBSvmxmnIaewzSNR9rUE7SCojVWYskW01O7ootmaa41nPSJgFjfAn0bUGRI838LlbkDpxVuBqb83BTTunwBNlddBXmm10dm2aw7CaVf9JrCyn_X9dhB0YGoanFGqXFYGKpj7nshJ4djVN8MHtLRB3oKWQ7jQUKE4L6S8WVkyic0_5KqBj7tc_4gxQAAAAGw_lmDAA'''  # Add your string session here
-)
+    api_id='27649783',
+    api_hash='834fd6015b50b781e0f8a41876ca95c8',
+    session_string=correct_padding("""
+BQGoLIMAOKXVTjaGOZN_8kShQdKccRd7HA-44GV5eLHHMW-x5wkMEWQHeNeymWRAp-Zml2tZZ8OjP8s-1_eLLKZiJTud9Nm8KO6iBNw_n91qB0tob5XfHcP9VRl1Yd97cCXOMv-wiQNNEN_APBKTGTrSdoEJxyv7RymmlhBSvmxmnIaewzSNR9rUE7SCojVWYskW01O7ootmaa41nPSJgFjfAn0bUGRI838LlbkDpxVuBqb83BTTunwBNlddBXmm10dm2aw7CaVf9JrCyn_X9dhB0YGoanFGqXFYGKpj7nshJ4djVN8MHtLRB3oKWQ7jQUKE4L6S8WVkyic0_5KqBj7tc_4gxQAAAAGw_lmDAA""")  # Ensure correct padding
+
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
 
@@ -40,6 +51,9 @@ async def approved(Client, message):
                 return
 
             for card_info in filtered_card_info:
+                if cards_collection.find_one({"card_info": card_info}):
+                    continue  # Skip if card already exists in the database
+
                 bin_number = card_info[:6]
                 bin_info = await bin_lookup(bin_number)
                 if bin_info:
@@ -61,12 +75,10 @@ async def approved(Client, message):
                         "⚜️Creator ➔ <b>𝙅𝙚𝙩𝙞𝙭</b>"
                     )
 
-                    await Client.send_message(chat_id='-1002222638488', text=formatted_message)
+                    await Client.send_message(chat_id='-1001822979359', text=formatted_message)
 
-                    with open('reserved.txt', 'a', encoding='utf-8') as f:
-                        f.write(card_info + '\n')
-                else:
-                    pass 
+                    # Save card info to MongoDB to prevent duplicate sending
+                    cards_collection.insert_one({"card_info": card_info})
     except Exception as e:
         print(e)
 
