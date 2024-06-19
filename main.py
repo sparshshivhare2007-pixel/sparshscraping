@@ -74,7 +74,7 @@ async def approved(Client, message):
                         "⚜️Creator ➔ <b>𝙅𝙚𝙩𝙞𝙭</b>"
                     )
 
-                    await Client.send_message(chat_id='-1001822979359', text=formatted_message)
+                    await Client.send_message(chat_id='-1002222638488', text=formatted_message)
 
                     # Save card info to MongoDB to prevent duplicate sending
                     cards_collection.insert_one({"card_info": card_info})
