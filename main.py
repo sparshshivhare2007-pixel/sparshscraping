@@ -101,28 +101,37 @@ async def process_card(Client, card_info):
         cards_collection.insert_one({"card_info": card_info})
         logger.info(f"Card info saved: {card_info}")
 
-async def approved(Client, message):
+async def approved(Client, messages):
     try:
-        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By JennaScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
-            filtered_card_info = filter_cards(message.text)
-            if not filtered_card_info:
-                logger.info("No card information found in message")
-                return
+        tasks = []
+        for message in messages:
+            if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By JennaScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
+                filtered_card_info = filter_cards(message.text)
+                if not filtered_card_info:
+                    logger.info("No card information found in message")
+                    continue
 
-            tasks = []
-            for card_info in filtered_card_info:
-                if not cards_collection.find_one({"card_info": card_info}):
-                    tasks.append(process_card(Client, card_info))
-                else:
-                    logger.info(f"Card info already exists: {card_info}")
+                for card_info in filtered_card_info:
+                    if not cards_collection.find_one({"card_info": card_info}):
+                        tasks.append(process_card(Client, card_info))
+                    else:
+                        logger.info(f"Card info already exists: {card_info}")
 
-            await asyncio.gather(*tasks)
+        await asyncio.gather(*tasks)
     except Exception as e:
         logger.error(f"Error in approved function: {e}")
 
+message_buffer = []
+BATCH_SIZE = 10  # Adjust the batch size as needed
+SLEEP_TIME = 5  # Sleep time in seconds between batches
+
 @app.on_message(filters.text)
 async def astro(Client, message):
-    if message.text:
-        await approved(Client, message)
+    message_buffer.append(message)
+    if len(message_buffer) >= BATCH_SIZE:
+        await approved(Client, message_buffer)
+        message_buffer.clear()
+        logger.info(f"Processed batch of {BATCH_SIZE} messages, sleeping for {SLEEP_TIME} seconds")
+        await asyncio.sleep(SLEEP_TIME)
 
 app.run()
