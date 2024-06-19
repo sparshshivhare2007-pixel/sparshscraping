@@ -123,7 +123,7 @@ async def approved(Client, messages):
 
 message_buffer = []
 BATCH_SIZE = 5  # Adjust the batch size as needed
-SLEEP_TIME = 3  # Sleep time in seconds between batches
+SLEEP_TIME = 5  # Sleep time in seconds between batches
 
 @app.on_message(filters.text)
 async def astro(Client, message):
