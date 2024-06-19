@@ -122,8 +122,8 @@ async def approved(Client, messages):
         logger.error(f"Error in approved function: {e}")
 
 message_buffer = []
-BATCH_SIZE = 10  # Adjust the batch size as needed
-SLEEP_TIME = 5  # Sleep time in seconds between batches
+BATCH_SIZE = 5  # Adjust the batch size as needed
+SLEEP_TIME = 3  # Sleep time in seconds between batches
 
 @app.on_message(filters.text)
 async def astro(Client, message):
