@@ -31,7 +31,7 @@ app = pyrogram.Client(
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
 
 def filter_cards(text):
-    regex = r'\d{16}\D*\d{3}'
+    regex = r'\d{15,16}\D*\d{2}\D*\d{2,4}\D*\d{3,4}'
     return re.findall(regex, text)
 
 async def bin_lookup(bin_number):
