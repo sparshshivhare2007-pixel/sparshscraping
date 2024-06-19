@@ -67,7 +67,7 @@ async def approved(Client, message):
                         "┏━━━━━━━⍟\n"
                         "┃𝖡𝖱𝖠𝖨𝖭𝖳𝖱𝖤𝖤 𝖠𝖴𝖳𝖧 𝟓$ ✅\n"
                         "┗━━━━━━━━━━━⊛\n\n"
-                        f"𖠁𝖢𝖠𝖱𝖣 ➔ <code>{card_info}</code>\n\n
+                        f"𖠁𝖢𝖠𝖱𝖣 ➔ <code>{card_info}</code>\n\n"
                         f"𖠁𝖲𝖳𝖠𝖳𝖴𝖲 ➔ <b>Approved! ✅</b>\n\n"
                         f"𖠁𝖡𝖨𝖭 ➔ <b>{brand}, {card_type}, {level}</b>\n\n"
                         f"𖠁𝖡𝖠𝖭𝖪 ➔ <b>{bank}</b>\n\n"
