@@ -67,18 +67,12 @@ async def approved(Client, message):
                         "┏━━━━━━━⍟\n"
                         "┃𝖡𝖱𝖠𝖨𝖭𝖳𝖱𝖤𝖤 𝖠𝖴𝖳𝖧 𝟓$ ✅\n"
                         "┗━━━━━━━━━━━⊛\n\n"
-                        "𝖢𝖠𝖱𝖣\n"
-                        f"𖠁Card ➔ <code>{card_info}</code>\n\n"
-                        "𝖲𝖳𝖠𝖳𝖴𝖲\n"
-                        f"𖠁Status ➔ <b>Approved! ✅</b>\n\n"
-                        "𝖡𝖨𝖭\n"
-                        f"𖠁Bin ➔ <b>{brand}, {card_type}, {level}</b>\n\n"
-                        "𝖡𝖠𝖭𝖪\n"
-                        f"𖠁Bank ➔ <b>{bank}</b>\n\n"
-                        "𝖢𝖮𝖴𝖭𝖳𝖱𝖸\n"
-                        f"𖠁Country ➔ <b>{country}, {country_flag}</b>\n\n"
-                        "𝖢𝖱𝖤𝖠𝖳𝖮𝖱\n"
-                        "𖠁Creator ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
+                        f"𖠁𝖢𝖠𝖱𝖣 ➔ <code>{card_info}</code>\n\n
+                        f"𖠁𝖲𝖳𝖠𝖳𝖴𝖲 ➔ <b>Approved! ✅</b>\n\n"
+                        f"𖠁𝖡𝖨𝖭 ➔ <b>{brand}, {card_type}, {level}</b>\n\n"
+                        f"𖠁𝖡𝖠𝖭𝖪 ➔ <b>{bank}</b>\n\n"
+                        f"𖠁𝖢𝖮𝖴𝖭𝖳𝖱𝖸 ➔ <b>{country}, {country_flag}</b>\n\n"
+                        "𖠁𝖢𝖱𝖤𝖠𝖳𝖮𝖱 ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
                     )
 
                     await Client.send_message(chat_id='-1002222638488', text=formatted_message)
