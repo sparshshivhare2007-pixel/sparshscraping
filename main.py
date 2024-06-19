@@ -9,14 +9,14 @@ import base64
 # MongoDB configuration
 MONGO_URI = 'mongodb+srv://iamdaxx404:asd@mohio.1uwb6r5.mongodb.net'
 client = MongoClient(MONGO_URI)
-db = client['jetix_scrapper_db']
+db = client['mrdaxx_scrapper_db']
 cards_collection = db['cards']
 
 def correct_padding(session_string):
     return session_string + "=" * ((4 - len(session_string) % 4) % 4)
 
 app = pyrogram.Client(
-    'jetix_scrapper',
+    'mrdaxx_scrapper',
     api_id='27649783',
     api_hash='834fd6015b50b781e0f8a41876ca95c8',
     session_string=correct_padding("BQGoLIMAOKXVTjaGOZN_8kShQdKccRd7HA-44GV5eLHHMW-x5wkMEWQHeNeymWRAp-Zml2tZZ8OjP8s-1_eLLKZiJTud9Nm8KO6iBNw_n91qB0tob5XfHcP9VRl1Yd97cCXOMv-wiQNNEN_APBKTGTrSdoEJxyv7RymmlhBSvmxmnIaewzSNR9rUE7SCojVWYskW01O7ootmaa41nPSJgFjfAn0bUGRI838LlbkDpxVuBqb83BTTunwBNlddBXmm10dm2aw7CaVf9JrCyn_X9dhB0YGoanFGqXFYGKpj7nshJ4djVN8MHtLRB3oKWQ7jQUKE4L6S8WVkyic0_5KqBj7tc_4gxQAAAAGw_lmDAA")  # Ensure correct padding
@@ -64,14 +64,21 @@ async def approved(Client, message):
                     country_flag = bin_info.get("country_flag", "")
 
                     formatted_message = (
-                        f"⚜️Card ➔ <code>{card_info}</code>\n"
-                        f"⚜️Status ➔ <b>Approved! ✅</b>\n"
-                        "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</b>\n"
-                        f"⚜️Bin ➔ <b>{brand}, {card_type}, {level}</b>\n"
-                        f"⚜️Bank ➔ <b>{bank}</b>\n"
-                        f"⚜️Country ➔ <b>{country}, {country_flag}</b>\n"
-                        "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</b>\n"
-                        "⚜️Creator ➔ <b>𝙅𝙚𝙩𝙞𝙭</b>"
+                        "┏━━━━━━━⍟\n"
+                        "┃𝖡𝖱𝖠𝖨𝖭𝖳𝖱𝖤𝖤 𝖠𝖴𝖳𝖧 𝟓$ ✅\n"
+                        "┗━━━━━━━━━━━⊛\n\n"
+                        "𝖢𝖠𝖱𝖣\n"
+                        f"𖠁Card ➔ <code>{card_info}</code>\n\n"
+                        "𝖲𝖳𝖠𝖳𝖴𝖲\n"
+                        f"𖠁Status ➔ <b>Approved! ✅</b>\n\n"
+                        "𝖡𝖨𝖭\n"
+                        f"𖠁Bin ➔ <b>{brand}, {card_type}, {level}</b>\n\n"
+                        "𝖡𝖠𝖭𝖪\n"
+                        f"𖠁Bank ➔ <b>{bank}</b>\n\n"
+                        "𝖢𝖮𝖴𝖭𝖳𝖱𝖸\n"
+                        f"𖠁Country ➔ <b>{country}, {country_flag}</b>\n\n"
+                        "𝖢𝖱𝖤𝖠𝖳𝖮𝖱\n"
+                        "𖠁Creator ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
                     )
 
                     await Client.send_message(chat_id='-1002222638488', text=formatted_message)
