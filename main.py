@@ -95,7 +95,7 @@ async def process_card(Client, card_info):
             "𖠁𝖢𝖱𝖤𝖠𝖳𝖮𝖱 ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
         )
 
-        await send_message_with_retry(Client, '-1002174770449', formatted_message)
+        await send_message_with_retry(Client, '-1002222638488', formatted_message)
 
         # Save card info to MongoDB to prevent duplicate sending
         cards_collection.insert_one({"card_info": card_info})
