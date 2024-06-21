@@ -80,11 +80,14 @@ async def approved(Client, message):
                     # Save card info to MongoDB to prevent duplicate sending
                     cards_collection.insert_one({"card_info": card_info})
     except Exception as e:
-        print(e)
+        print(f"Error in approved function: {e}")
 
 @app.on_message(filters.text)
 async def astro(Client, message):
-    if message.text:
-        await asyncio.create_task(approved(Client, message))
+    try:
+        if message.text:
+            await asyncio.create_task(approved(Client, message))
+    except Exception as e:
+        print(f"Error in astro function: {e}")
 
 app.run()
