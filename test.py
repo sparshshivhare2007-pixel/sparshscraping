@@ -9,17 +9,17 @@ import base64
 # MongoDB configuration
 MONGO_URI = 'mongodb+srv://iamdaxx404:asd@mohio.1uwb6r5.mongodb.net'
 client = MongoClient(MONGO_URI)
-db = client['mrdaxx_scrapper_db']
+db = client['daxx_scrapper_db']
 cards_collection = db['cards']
 
 def correct_padding(session_string):
     return session_string + "=" * ((4 - len(session_string) % 4) % 4)
 
 app = pyrogram.Client(
-    'mrdaxx_scrapper',
+    'daxx_scrapper',
     api_id='27649783',
     api_hash='834fd6015b50b781e0f8a41876ca95c8',
-    session_string=correct_padding("BAAaqk4AWC2Yua218AV2Ti4vzyYWVkSj5iDeXMf3sbB_fH9SXkg2027WGmQiFr3j1ZbX7gexyQbICRapbHyJlOwWk80Yx6dWew7GP-Q-m4yqnpEjAKOUymRVtfyByKdtG_6s9RfhR-YyDsk-MTPXLxTYWBt-smns1awmSEdvCb4dsoMNMT4rIbYsTb62TRJzVJxV_kLJuVuI3zBvbPoDOewQ1P4oahqppG0GWaQMP-KGG2q7sZso-2G3IyXV8cA7bhQ1FKR-61YgekltZ3oAafqlGAayeN60IYvvq4auvVkRs_ezO6lOYhSVmWg-SrjDC22Vwd_3BNIcOaZ2HcAdh-9Lh2sMFwAAAAG2CUg-AA")  # Ensure correct padding
+    session_string=correct_padding("BAAaqk4AWC2Yua218AV2Ti4vzyYWVkSj5iDeXMf3sbB_fH9SXkg2027WGmQiFr3j1ZbX7gexyQbICRapbHyJlOwWk80Yx6dWew7GP-Q-m4yqnpEjAKOUymRVtfyByKdtG_6s9RfhR-YyDsk-MTPXLxTYWBt-smns1awmSEdvCb4dsoMNMT4rIbYsTb62TRJzVJxV_kLJuVuI3zBvbPoDOewQ1P4oahqppG0GWaQMP-KGG2q7sZso-2G3IyXV8cA7bhQ1FKR-61YgekltZ3oAafqlGAayeN60IYvvq4auvVkRs_ezO6lOYhSVmWg-SrjDC22Vwd_3BNIcOaZ2HcAdh-9Lh2sMFwAAAAG2CUg-AA")  # pyrogram v2 string session 
 )
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
@@ -44,15 +44,13 @@ async def bin_lookup(bin_number):
 
 async def approved(Client, message):
     try:
-        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By JennaScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
+        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By Scrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
-                print("No card info found in the message.")
                 return
 
             for card_info in filtered_card_info:
                 if cards_collection.find_one({"card_info": card_info}):
-                    print(f"Card info already exists in the database: {card_info}")
                     continue  # Skip if card already exists in the database
 
                 bin_number = card_info[:6]
@@ -77,25 +75,16 @@ async def approved(Client, message):
                         "𖠁𝖢𝖱𝖤𝖠𝖳𝖮𝖱 ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
                     )
 
-                    print(f"Sending message to chat: {formatted_message}")
                     await Client.send_message(chat_id='-1002222638488', text=formatted_message)
 
                     # Save card info to MongoDB to prevent duplicate sending
                     cards_collection.insert_one({"card_info": card_info})
-                    print(f"Card info saved to database: {card_info}")
     except Exception as e:
-        print(f"Error in approved function: {e}")
+        print(e)
 
 @app.on_message(filters.text)
 async def astro(Client, message):
-    try:
-        if message.text:
-            print(f"Received message: {message.text}")
-            await asyncio.create_task(approved(Client, message))
-    except Exception as e:
-        print(f"Error in astro function: {e}")
+    if message.text:
+        await asyncio.create_task(approved(Client, message))
 
-if __name__ == "__main__":
-    print("Bot is starting...")
-    app.start()
-    print("Bot successfully started")
+app.run()
