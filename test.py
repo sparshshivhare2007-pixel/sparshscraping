@@ -99,5 +99,3 @@ if __name__ == "__main__":
     print("Bot is starting...")
     app.start()
     print("Bot successfully started")
-    app.idle()
-    
