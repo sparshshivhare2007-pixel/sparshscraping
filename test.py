@@ -47,10 +47,12 @@ async def approved(Client, message):
         if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By JennaScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
+                print("No card info found in the message.")
                 return
 
             for card_info in filtered_card_info:
                 if cards_collection.find_one({"card_info": card_info}):
+                    print(f"Card info already exists in the database: {card_info}")
                     continue  # Skip if card already exists in the database
 
                 bin_number = card_info[:6]
@@ -75,10 +77,12 @@ async def approved(Client, message):
                         "𖠁𝖢𝖱𝖤𝖠𝖳𝖮𝖱 ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
                     )
 
+                    print(f"Sending message to chat: {formatted_message}")
                     await Client.send_message(chat_id='-1002222638488', text=formatted_message)
 
                     # Save card info to MongoDB to prevent duplicate sending
                     cards_collection.insert_one({"card_info": card_info})
+                    print(f"Card info saved to database: {card_info}")
     except Exception as e:
         print(f"Error in approved function: {e}")
 
@@ -93,4 +97,7 @@ async def astro(Client, message):
 
 if __name__ == "__main__":
     print("Bot is starting...")
-    app.run()
+    app.start()
+    print("Bot successfully started")
+    app.idle()
+    
