@@ -25,7 +25,7 @@ app = pyrogram.Client(
     'mrdaxx_scrapper',
     api_id='27649783',
     api_hash='834fd6015b50b781e0f8a41876ca95c8',
-    session_string=correct_padding("BQEBfSYAqGKrE3X2TyXhJQwTfbD70-BlYP6gS-TUM74yBX2nnLwT0r-pWZUn516QzjsyUfzWXibY_9h2jNc9UIEitH3aQcZhqEj4v5wQ0l0-OmAeRADY0Hicqd8zVWaoC-o9SlhZmbE1xA9JWQVTMC_FF6EG3Xx1K1pkRwW-0NkA7uvBxV-q3uaLzSdy2gplOz0KlGXOqITpruRDfNcPDBjQjgmguH_A-7Q6C0oyqZ8l-k1W42JrR9f3aEx5p8ym7v2P8Wwo4X2KmjFL2yjphY8E-A04UjCH0KjQeudADe8bSry8MGvJ5JN142pEz4QxMEr8IH-UdwdGj6IA-3qAnBEW4HeulgAAAAGw_lmDAA")  # Ensure correct padding
+    session_string=correct_padding("BAE9p8oAB0gnl5-vQwEqaWQ0-fo4PCz3jAydwwLI5m0v7eAhfjE2zmNXT7Bn20EQwT56yS-AK6qf86_G_MbImwHPJiZpkLUhPUiGJgmIFyh67oMUPbES36pXITRV0_iD2gaIm-gXT1vzkIVp0aGvPLU4yGGEWulWWRpVzqHJ3Ur8GB99_xBHdhWp149eodHVOBCjq9RybgrCRSxrh8rjZ4m8-ugNn9WrBrCFcwDeNhjETGrCNa7TJKKBiC2-2ViGUHYKZJfXdIFtA0osHEWqa3ErSC9u4Pzay4GOVddzXTD0tP7jY5KsDRDv1TJ5kWeAzbuHT8nFgNdWPVh6l3nV2v9NoYsKZAAAAAG2CUg-AA")  # Ensure correct padding
 )
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
@@ -95,7 +95,7 @@ async def process_card(Client, card_info):
             "𖠁𝖢𝖱𝖤𝖠𝖳𝖮𝖱 ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
         )
 
-        await send_message_with_retry(Client, '-1002222638488', formatted_message)
+        await send_message_with_retry(Client, '-1002174770449', formatted_message)
 
         # Save card info to MongoDB to prevent duplicate sending
         cards_collection.insert_one({"card_info": card_info})
