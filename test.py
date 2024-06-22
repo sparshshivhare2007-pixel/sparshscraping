@@ -91,4 +91,4 @@ async def astro(Client, message):
         print(f"Error in astro function: {e}")
 
 app.run()
-await app.send_message(-1002222638488, 'BOT STARTED')
+app.send_message(-1002222638488, 'BOT STARTED')
