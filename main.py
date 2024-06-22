@@ -42,7 +42,7 @@ async def bin_lookup(bin_number):
             else:
                 return None
 
-async def approved(Client, message):
+async def approved(client_instance, message):
     try:
         if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By JennaScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
@@ -75,16 +75,9 @@ async def approved(Client, message):
                         "𖠁𝖢𝖱𝖤𝖠𝖳𝖮𝖱 ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
                     )
 
-                    await Client.send_message(chat_id='-1002222638488', text=formatted_message)
+                    await client_instance.send_message(chat_id='-1002222638488', text=formatted_message)
 
                     # Save card info to MongoDB to prevent duplicate sending
                     cards_collection.insert_one({"card_info": card_info})
     except Exception as e:
-        print(e)
-
-@app.on_message(filters.text)
-async def astro(Client, message):
-    if message.text:
-        await asyncio.create_task(approved(Client, message))
-
-app.run()
+        print(f"An error occurred: {e}")
