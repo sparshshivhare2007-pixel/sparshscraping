@@ -19,7 +19,7 @@ app = pyrogram.Client(
     'mrdaxx_scrapper',
     api_id='27649783',
     api_hash='834fd6015b50b781e0f8a41876ca95c8',
-    session_string=correct_padding("BQDF7bFBynp8v6m71dQANPF8reSqpQs54wVytaJbzr5DOx_t05VPK2K_KzGU3ozoxQAutqMcwpSjPwzEwSQnhBrV76Luzutr9gI_5JYOQCTsesIuUEt0z_kmB3jNk7-Cc1XnCb6RI5V-QrSJ85bBGuuSYM_olmQs0RrGBTwcSEgAGiIxoh4iLmvdRaUB95go1brDfc4wwo7pPvuQkE2BZzj_j6VSdiSur28VODEoyHF_xwEPhYtuiswtaw2m_ErxKk8qWTlra-InDr654dTXYiLOJW9OxjCxNl8Y60ahgWJQUnyIRuOEfDfM2x3NXVofakX8bwttDpbN1SqQgPGrefJIaUQmogA")  # Ensure correct padding
+    session_string=correct_padding("BQDF7bFBynp8v6m71dQANPF8reSqpQs54wVytaJbzr5DOx_t05VPK2K_KzGU3ozoxQAutqMcwpSjPwzEwSQnhBrV76Luzutr9gI_5JYOQCTsesIuUEt0z_kmB3jNk7-Cc1XnCb6RI5V-QrSJ85bBGuuSYM_olmQs0RrGBTwcSEgAGiIxoh4iLmvdRaUB95go1brDfc4wwo7pPvuQkE2BZzj_j6VSdiSur28VODEoyHF_xwEPhYtuiswtaw2m_ErxKk8qWTlra-InDr654dTXYiLOJW9OxjCxNl8Y60ahgWJQUnyIRuOEfDfM2x3NXVofakX8bwttDpbN1SqQgPGrefJIaUQmogA")
 )
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
@@ -81,3 +81,10 @@ async def approved(client_instance, message):
                     cards_collection.insert_one({"card_info": card_info})
     except Exception as e:
         print(f"An error occurred: {e}")
+
+@app.on_message(filters.text)
+async def astro(client_instance, message):
+    if message.text:
+        await asyncio.create_task(approved(client_instance, message))
+
+app.run()
