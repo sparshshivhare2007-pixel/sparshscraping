@@ -15,11 +15,12 @@ cards_collection = db['cards']
 def correct_padding(session_string):
     return session_string + "=" * ((4 - len(session_string) % 4) % 4)
 
+# Update the session_string here with the new session string and apply padding
 app = pyrogram.Client(
     'mrdaxx_scrapper',
     api_id='27649783',
     api_hash='834fd6015b50b781e0f8a41876ca95c8',
-    session_string=correct_padding("BQDF7bFBynp8v6m71dQANPF8reSqpQs54wVytaJbzr5DOx_t05VPK2K_KzGU3ozoxQAutqMcwpSjPwzEwSQnhBrV76Luzutr9gI_5JYOQCTsesIuUEt0z_kmB3jNk7-Cc1XnCb6RI5V-QrSJ85bBGuuSYM_olmQs0RrGBTwcSEgAGiIxoh4iLmvdRaUB95go1brDfc4wwo7pPvuQkE2BZzj_j6VSdiSur28VODEoyHF_xwEPhYtuiswtaw2m_ErxKk8qWTlra-InDr654dTXYiLOJW9OxjCxNl8Y60ahgWJQUnyIRuOEfDfM2x3NXVofakX8bwttDpbN1SqQgPGrefJIaUQmogA")
+    session_string=correct_padding("BQAaqk4AcZrIU5Xzzw0Z7gJAzLbFsKYaH90txYwLDZYYs0RhYRtKUxojSiTnEFk3gbECN9qJXPqI_JWTbPMIsD1tAcft0uhjc6obuxCBQkOGBVm6bxPKUvpShUnHQKsxxgG_IvFAbtplnQGaUt4bIbjk_sbr8CGwebOEi0xB8SHLhlfLHeivK_RvFrF8Egh5QrJIvTzpsjljHp3-GyVlsWC8ZPLAJyMzCcRChk8yJ2WuKqdRJhND4UyRkiHgDU-QQrm14GdssrlQV9mT8g1ldvD56sfk2ALJS7SW-qENwQPGTTOVHQPBNGiv2MF7YXKrDa78QLYn_UqtAZmSuKxUGsaSeCfJiAAAAABpRCaiAA")
 )
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
