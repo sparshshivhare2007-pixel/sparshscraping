@@ -45,7 +45,7 @@ async def bin_lookup(bin_number):
 
 async def approved(client_instance, message):
     try:
-        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By JennaScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
+        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
                 return
@@ -66,14 +66,14 @@ async def approved(client_instance, message):
 
                     formatted_message = (
                         "┏━━━━━━━⍟\n"
-                        "┃𝖡𝖱𝖠𝖨𝖭𝖳𝖱𝖤𝖤 𝖠𝖴𝖳𝖧 𝟓$ ✅\n"
+                        "┃**#APPROVED 𝟓$ ✅**\n"
                         "┗━━━━━━━━━━━⊛\n\n"
-                        f"𖠁𝖢𝖠𝖱𝖣 ➔ <code>{card_info}</code>\n\n"
-                        f"𖠁𝖲𝖳𝖠𝖳𝖴𝖲 ➔ <b>Approved! ✅</b>\n\n"
-                        f"𖠁𝖡𝖨𝖭 ➔ <b>{brand}, {card_type}, {level}</b>\n\n"
-                        f"𖠁𝖡𝖠𝖭𝖪 ➔ <b>{bank}</b>\n\n"
-                        f"𖠁𝖢𝖮𝖴𝖭𝖳𝖱𝖸 ➔ <b>{country}, {country_flag}</b>\n\n"
-                        "𖠁𝖢𝖱𝖤𝖠𝖳𝖮𝖱 ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
+                        f"**𝖢𝖠𝖱𝖣** ➠ <code>{card_info}</code>\n\n"
+                        f"**𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>**APPROVED**! ✅</b>\n\n"
+                        f"**𝖡𝖨𝖭** ➠ <b>{brand}, {card_type}, {level}</b>\n\n"
+                        f"**𝖡𝖠𝖭𝖪** ➠ <b>{bank}</b>\n\n"
+                        f"**𝖢𝖮𝖴𝖭𝖳𝖱𝖸** ➠ <b>{country}, {country_flag}</b>\n\n"
+                        "**𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>๏─𝙂𝘽𝙋─๏</b>"
                     )
 
                     await client_instance.send_message(chat_id='-1002222638488', text=formatted_message)
