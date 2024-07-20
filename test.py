@@ -3,23 +3,16 @@ from pyrogram import Client, filters
 import re
 import asyncio
 import aiohttp
-from pymongo import MongoClient
-import base64
-
-# MongoDB configuration
-MONGO_URI = 'mongodb+srv://iamdaxx404:asd@mohio.1uwb6r5.mongodb.net'
-client = MongoClient(MONGO_URI)
-db = client['daxx_scrapper_db']
-cards_collection = db['cards']
 
 def correct_padding(session_string):
     return session_string + "=" * ((4 - len(session_string) % 4) % 4)
 
+# Update the session_string here with the new session string and apply padding
 app = pyrogram.Client(
-    'daxx_scrapper',
+    'mrdaxx_scrapper',
     api_id='27649783',
     api_hash='834fd6015b50b781e0f8a41876ca95c8',
-    session_string=correct_padding("BAAaqk4AWZCltU_yyk5ZbPowavHH3T8xkbcSJ7WmsUP3WV2oukE71f4hYapYx8yEfGEdYOxB-JGQ_16eTUAem67COxP3Fq_xpJ25fA8yMtwkWUACdNnV96DCHnpCcqASE4TKyj83PxLArhNjL8mYRyLEod6dwgEG7vhzQKX9g8nToyepJt296YujXCOmM-r7EotXO5wQboXvf1SwA571xWEk0z46NDuRDOb8dz21sQ-p94f0ALb2l7ZSdJg0QfDaOh-GyUna5JWcgWoJerOn6qtG8BtO_cG0XlYdfaEUmbYTMjlv-KO4X-Vf3YGcKdELi-Q0gVkj66B9hrBOLoxxVY478f_LpwAAAAG2CUg-AA")  # pyrogram v2 string session 
+    session_string=correct_padding("BQGl5vcAsxQa8yrfEjo0F0HKcVfWGWVO5FQI2NDsrHtAn0VUYwBbIGncc8n8qpIqNlLoxFMEB0ox3PInbQDp4FC55iRXeZJKQfduFLv6Jgwih8ExeWgUeRtQBW-X1niHcUiCLRW6UZnCAGFxX7RrmosP6reQXaQospdyIK2O_DU9x9cEzGrgBXHxE4O0f7SzRYYsrUaAwiVwsQX4l3X6KujT3dob2SYY1drFY_vclBDba_MeEUXVOV-W40w2LWEfR9ZEmf3ePoIq-VewHUCTaQsfVbhBvyV2F4dntbxqFKah5FQlo8kWqWftsy3kC761GTA747QKbIv5jho6I20K43KgnwkTQwAAAABpRCaiAA")
 )
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
@@ -42,17 +35,14 @@ async def bin_lookup(bin_number):
             else:
                 return None
 
-async def approved(Client, message):
+async def approved(client_instance, message):
     try:
-        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By Scrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
+        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
                 return
 
             for card_info in filtered_card_info:
-                if cards_collection.find_one({"card_info": card_info}):
-                    continue  # Skip if card already exists in the database
-
                 bin_number = card_info[:6]
                 bin_info = await bin_lookup(bin_number)
                 if bin_info:
@@ -65,30 +55,23 @@ async def approved(Client, message):
 
                     formatted_message = (
                         "┏━━━━━━━⍟\n"
-                        "┃𝖡𝖱𝖠𝖨𝖭𝖳𝖱𝖤𝖤 𝖠𝖴𝖳𝖧 𝟓$ ✅\n"
+                        "┃**#APPROVED 𝟓$ ✅**\n"
                         "┗━━━━━━━━━━━⊛\n\n"
-                        f"𖠁𝖢𝖠𝖱𝖣 ➔ <code>{card_info}</code>\n\n"
-                        f"𖠁𝖲𝖳𝖠𝖳𝖴𝖲 ➔ <b>Approved! ✅</b>\n\n"
-                        f"𖠁𝖡𝖨𝖭 ➔ <b>{brand}, {card_type}, {level}</b>\n\n"
-                        f"𖠁𝖡𝖠𝖭𝖪 ➔ <b>{bank}</b>\n\n"
-                        f"𖠁𝖢𝖮𝖴𝖭𝖳𝖱𝖸 ➔ <b>{country}, {country_flag}</b>\n\n"
-                        "𖠁𝖢𝖱𝖤𝖠𝖳𝖮𝖱 ➔ <b>๏─𝙂𝘽𝙋─๏</b>"
+                        f"**𝖢𝖠𝖱𝖣** ➠ <code>{card_info}</code>\n\n"
+                        f"**𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>**APPROVED**! ✅</b>\n\n"
+                        f"**𝖡𝖨𝖭** ➠ <b>{brand}, {card_type}, {level}</b>\n\n"
+                        f"**𝖡𝖠𝖭𝖪** ➠ <b>{bank}</b>\n\n"
+                        f"**𝖢𝖮𝖴𝖭𝖳𝖱𝖸** ➠ <b>{country}, {country_flag}</b>\n\n"
+                        "**𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>๏─𝙂𝘽𝙋─๏</b>"
                     )
 
-                    await Client.send_message(chat_id='-1002222638488', text=formatted_message)
-
-                    # Save card info to MongoDB to prevent duplicate sending
-                    cards_collection.insert_one({"card_info": card_info})
+                    await client_instance.send_message(chat_id='-1002222638488', text=formatted_message)
     except Exception as e:
-        print(f"Error in approved function: {e}")
+        print(f"An error occurred: {e}")
 
 @app.on_message(filters.text)
-async def astro(Client, message):
-    try:
-        if message.text:
-            await asyncio.create_task(approved(Client, message))
-    except Exception as e:
-        print(f"Error in astro function: {e}")
+async def astro(client_instance, message):
+    if message.text:
+        await asyncio.create_task(approved(client_instance, message))
 
 app.run()
-app.send_message(-1002222638488, 'BOT STARTED')
