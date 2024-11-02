@@ -39,7 +39,7 @@ async def bin_lookup(bin_number):
 
 async def approved(client_instance, message):
     try:
-        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
+        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|🔥|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
                 print("No valid card information found in message.")
@@ -66,8 +66,8 @@ async def approved(client_instance, message):
                             "┃**#CHARGE 1$ ✅**\n"
                             "┗━━━━━━━━━━━⊛\n\n"
                             "**EXTRAP  ➠**\n"
-                            f"{bin_number}|{month}|{year}|{cvv}\n"
-                            f"{card_number[:8]}|{month}|{year}|{cvv}\n\n"
+                            f"`{bin_number}|{month}|{year}|{cvv}`\n\n"
+                            f"`{card_number[:8]}|{month}|{year}|{cvv}`\n\n"
                             f"**𝖢𝖠𝖱𝖣** ➠ <code>{card_number}|{month}|{year}|{cvv}</code>\n\n"
                             f"**𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>APPROVED! ✅</b>\n\n"
                             f"**𝖡𝖨𝖭** ➠ <b>{brand}, {card_type}, {level}</b>\n\n"
