@@ -60,14 +60,14 @@ async def approved(client_instance, message):
 
                         formatted_message = (
                             "┏━━━━━━━⍟\n"
-                            "┃**#APPROVED 𝟓$ ✅**\n"
+                            "┃**#CHARGE 1$ ✅**\n"
                             "┗━━━━━━━━━━━⊛\n\n"
                             f"**𝖢𝖠𝖱𝖣** ➠ <code>{card_info}</code>\n\n"
                             f"**𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>**APPROVED**! ✅</b>\n\n"
                             f"**𝖡𝖨𝖭** ➠ <b>{brand}, {card_type}, {level}</b>\n\n"
                             f"**𝖡𝖠𝖭𝖪** ➠ <b>{bank}</b>\n\n"
                             f"**𝖢𝖮𝖴𝖭𝖳𝖱𝖸** ➠ <b>{country}, {country_flag}</b>\n\n"
-                            "**𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>๏─𝙂𝘽𝙋─๏</b>"
+                            "**𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>@Vclubcharge</b>"
                         )
 
                         # Send message to Telegram channel
