@@ -1,26 +1,16 @@
 import pyrogram
 from pyrogram import Client, filters
 import re
-import asyncio
 import aiohttp
-from pymongo import MongoClient
 
-# MongoDB configuration
-MONGO_URI = 'mongodb+srv://iamdaxx404:asd@mohio.1uwb6r5.mongodb.net'
-try:
-    client = MongoClient(MONGO_URI)
-    db = client['mrdaxx_scrapper_db']
-    cards_collection = db['cards']
-    print("MongoDB connected successfully.")
-except Exception as e:
-    print(f"Error connecting to MongoDB: {e}")
-
-app = pyrogram.Client(
+# Telegram bot setup
+app = Client(
     'mrdaxx_scrapper',
     api_id=27649783,
     api_hash='834fd6015b50b781e0f8a41876ca95c8'
 )
 
+# API for BIN lookup
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
 
 def filter_cards(text):
@@ -57,11 +47,6 @@ async def approved(client_instance, message):
 
             for card_info in filtered_card_info:
                 try:
-                    # Check if card is already in the database
-                    if cards_collection.find_one({"card_info": card_info}):
-                        print(f"Card already exists in database, skipping: {card_info}")
-                        continue
-
                     # Perform BIN lookup
                     bin_number = card_info[:6]
                     bin_info = await bin_lookup(bin_number)
@@ -88,23 +73,18 @@ async def approved(client_instance, message):
                         # Send message to Telegram channel
                         await client_instance.send_message(chat_id='@CHARGECCDROP', text=formatted_message)
                         print("Message sent to channel successfully.")
-
-                        # Save card info to MongoDB to prevent duplicate sending
-                        cards_collection.insert_one({"card_info": card_info})
-                        print(f"Card info saved to database: {card_info}")
                 except Exception as e:
                     print(f"Error processing card info {card_info}: {e}")
     except Exception as e:
         print(f"An error occurred in approved function: {e}")
 
-@app.on_message(filters.text)
-async def astro(client_instance, message):
+@app.on_message(filters.text & filters.group)
+async def forward_all(client_instance, message):
     try:
-        if message.text:
-            print("Received a message for processing.")
-            await approved(client_instance, message)
+        print("Forwarding message from joined group.")
+        await approved(client_instance, message)
     except Exception as e:
-        print(f"Error in astro function: {e}")
+        print(f"Error in forward_all function: {e}")
 
 try:
     print("Starting bot...")
