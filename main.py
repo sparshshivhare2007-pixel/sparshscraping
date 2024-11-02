@@ -12,15 +12,10 @@ client = MongoClient(MONGO_URI)
 db = client['mrdaxx_scrapper_db']
 cards_collection = db['cards']
 
-def correct_padding(session_string):
-    return session_string + "=" * ((4 - len(session_string) % 4) % 4)
-
-# Update the session_string here with the new session string and apply padding
 app = pyrogram.Client(
     'mrdaxx_scrapper',
-    api_id='27649783',
-    api_hash='834fd6015b50b781e0f8a41876ca95c8',
-    session_string=correct_padding("BQGl5vcAsxQa8yrfEjo0F0HKcVfWGWVO5FQI2NDsrHtAn0VUYwBbIGncc8n8qpIqNlLoxFMEB0ox3PInbQDp4FC55iRXeZJKQfduFLv6Jgwih8ExeWgUeRtQBW-X1niHcUiCLRW6UZnCAGFxX7RrmosP6reQXaQospdyIK2O_DU9x9cEzGrgBXHxE4O0f7SzRYYsrUaAwiVwsQX4l3X6KujT3dob2SYY1drFY_vclBDba_MeEUXVOV-W40w2LWEfR9ZEmf3ePoIq-VewHUCTaQsfVbhBvyV2F4dntbxqFKah5FQlo8kWqWftsy3kC761GTA747QKbIv5jho6I20K43KgnwkTQwAAAABpRCaiAA")
+    api_id=27649783,  # Use integer without quotes
+    api_hash='834fd6015b50b781e0f8a41876ca95c8'
 )
 
 BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
@@ -76,7 +71,7 @@ async def approved(client_instance, message):
                         "**𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>๏─𝙂𝘽𝙋─๏</b>"
                     )
 
-                    await client_instance.send_message(chat_id='-1002222638488', text=formatted_message)
+                    await client_instance.send_message(chat_id='@CHARGECCDROP', text=formatted_message)
 
                     # Save card info to MongoDB to prevent duplicate sending
                     cards_collection.insert_one({"card_info": card_info})
