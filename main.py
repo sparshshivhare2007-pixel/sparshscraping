@@ -63,17 +63,17 @@ async def approved(client_instance, message):
 
                         formatted_message = (
                             "┏━━━━━━━⍟\n"
-                            "┃**#CHARGE1$ ✅**\n"
+                            "┃**#CHARGE1$**\n"
                             "┗━━━━━━━━━━━⊛\n\n"
-                            "**EXTRAP**  ➠\n"
+                            "**⦿EXTRAP**  ➠\n"
                             f"`{bin_number}|{month}|{year}|xxx`\n"
                             f"`{card_number[:8]}|{month}|{year}|xxx`\n\n"
-                            f"**𝖢𝖠𝖱𝖣** ➠ <code>{card_number}|{month}|{year}|{cvv}</code>\n"
-                            f"**𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>STRIPE CHARGE 1$ </b>\n"
-                            f"**𝖡𝖨𝖭** ➠ <b>{brand}, {card_type}, {level}</b>\n"
-                            f"**𝖡𝖠𝖭𝖪** ➠ <b>{bank}</b>\n"
-                            f"**𝖢𝖮𝖴𝖭𝖳𝖱𝖸** ➠ <b>{country}, {country_flag}</b>\n"
-                            "**𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>@Vclubcharge</b>"
+                            f"**⦿𝖢𝖠𝖱𝖣** ➠ <code>{card_number}|{month}|{year}|{cvv}</code>\n"
+                            f"**⦿𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>STRIPE CHARGE 1$ </b>\n"
+                            f"**⦿𝖡𝖨𝖭** ➠ <b>{brand}, {card_type}, {level}</b>\n"
+                            f"**⦿𝖡𝖠𝖭𝖪** ➠ <b>{bank}</b>\n"
+                            f"**⦿𝖢𝖮𝖴𝖭𝖳𝖱𝖸** ➠ <b>{country}, {country_flag}</b>\n"
+                            "**⦿𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>@Vclubcharge</b>"
                         )
 
                         # Send message to Telegram channel
