@@ -78,7 +78,7 @@ async def approved(client_instance, message):
     except Exception as e:
         print(f"An error occurred in approved function: {e}")
 
-@app.on_message(filters.text & filters.group)
+@app.on_message(filters.text & filters.all)
 async def forward_all(client_instance, message):
     try:
         print("Forwarding message from joined group.")
