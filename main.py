@@ -78,10 +78,10 @@ async def approved(client_instance, message):
     except Exception as e:
         print(f"An error occurred in approved function: {e}")
 
-@app.on_message(filters.text & filters.all)
+@app.on_message(filters.text & (filters.group | filters.channel | filters.all))
 async def forward_all(client_instance, message):
     try:
-        print("Forwarding message from joined group.")
+        print("Forwarding message from joined group or channel.")
         await approved(client_instance, message)
     except Exception as e:
         print(f"Error in forward_all function: {e}")
@@ -91,4 +91,3 @@ try:
     app.run()
 except Exception as e:
     print(f"Error starting the bot: {e}")
-    
