@@ -63,7 +63,7 @@ async def approved(client_instance, message):
 
                         formatted_message = (
                             "┏━━━━━━━⍟\n"
-                            "┃**#{bin_number}**\n"
+                            "┃**˹CHARGE˼˹1$˼**\n"
                             "┗━━━━━━━━━━━⊛\n\n"
                             "**⦿ EXTRAP**  ➠\n"
                             f"`{card_number[:8]}|{month}|{year}|xxx`\n"
