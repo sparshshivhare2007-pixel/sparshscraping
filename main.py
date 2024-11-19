@@ -39,7 +39,7 @@ async def bin_lookup(bin_number):
 
 async def approved(client_instance, message):
     try:
-        if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|🔥|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
+        if re.search(r'(Approved!|MASTERCARD|VISA|✺ Extrap|#bin|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|🔥|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
                 print("No valid card information found in message.")
@@ -63,21 +63,21 @@ async def approved(client_instance, message):
 
                         formatted_message = (
                             "┏━━━━━━━⍟\n"
-                            "┃**#CHARGE1$**\n"
+                            "┃**#{bin_number}**\n"
                             "┗━━━━━━━━━━━⊛\n\n"
                             "**⦿ EXTRAP**  ➠\n"
-                            f"`{bin_number}|{month}|{year}|xxx`\n"
-                            f"`{card_number[:8]}|{month}|{year}|xxx`\n\n"
+                            f"`{card_number[:8]}|{month}|{year}|xxx`\n"
+                            f"`{card_number[:12]}|{month}|{year}|xxx`\n\n"
                             f"**⦿ 𝖢𝖠𝖱𝖣** ➠ <code>{card_number}|{month}|{year}|{cvv}</code>\n"
                             f"**⦿ 𝖲𝖳𝖠𝖳𝖴𝖲** ➠ <b>STRIPE CHARGE 1$ </b>\n"
                             f"**⦿ 𝖡𝖨𝖭** ➠ <b>{brand}, {card_type}, {level}</b>\n"
                             f"**⦿ 𝖡𝖠𝖭𝖪** ➠ <b>{bank}</b>\n"
                             f"**⦿ 𝖢𝖮𝖴𝖭𝖳𝖱𝖸** ➠ <b>{country}, {country_flag}</b>\n"
-                            "**⦿ 𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>@Vclubcharge</b>"
+                            "**⦿ 𝖢𝖱𝖤𝖠𝖳𝖮𝖱** ➠ <b>@vclubdrop</b>"
                         )
 
                         # Send message to Telegram channel
-                        await client_instance.send_message(chat_id='@CHARGECCDROP', text=formatted_message)
+                        await client_instance.send_message(chat_id='-1002473553874', text=formatted_message)
                         print("Message sent to channel successfully.")
                 except Exception as e:
                     print(f"Error processing card info {card}: {e}")
