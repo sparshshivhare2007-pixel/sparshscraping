@@ -39,7 +39,7 @@ async def bin_lookup(bin_number):
 
 async def approved(client_instance, message):
     try:
-        if re.search(r'(Approved!|Charge Cards|Gateway Rejected: avs(1000)|✺ Extrap|#bin|Charged|authenticate_successful|Braintree Auth|Auth|XVV|CCN|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|🔥|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Chase|Braintree Auth (200)|Approved) ✅', message.text):
+        if re.search(r'(Approved!|MASTERCARD|VISA|✺ Extrap|#bin|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|APPROVED|🔥|New Cards Found By DaxxScrapper|ꕥ Extrap [☭]|み RIMURU SCRAPE by|Approved) ✅', message.text):
             filtered_card_info = filter_cards(message.text)
             if not filtered_card_info:
                 print("No valid card information found in message.")
@@ -77,7 +77,7 @@ async def approved(client_instance, message):
                         )
 
                         # Send message to Telegram channel
-                        await client_instance.send_message(chat_id='@vclubhits', text=formatted_message)
+                        await client_instance.send_message(chat_id='@vclubscr', text=formatted_message)
                         print("Message sent to channel successfully.")
                 except Exception as e:
                     print(f"Error processing card info {card}: {e}")
