@@ -6,8 +6,8 @@ import aiohttp
 # Telegram bot setup
 app = Client(
     'mrdaxx_scrapper',
-    api_id=27649783,
-    api_hash='834fd6015b50b781e0f8a41876ca95c8'
+    api_id=26407665,
+    api_hash='f10822a551f38b26ee1179e1a6515e01'
 )
 
 # API for BIN lookup
@@ -98,3 +98,4 @@ try:
 except Exception as e:
     print(f"Error starting the bot: {e}")
     
+
